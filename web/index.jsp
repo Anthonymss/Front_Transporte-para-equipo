@@ -63,7 +63,8 @@
         apellido: json.apellido,
         correoElectronico: json.correoElectronico,
         imagen: json.imagen,
-        role: json.roles[0].nombre
+        role: json.roles[0].nombre,
+        idSucursal:json.idSucursal
       };
       sessionStorage.setItem('usuario', JSON.stringify(usuario));
       switch (usuario.role) {

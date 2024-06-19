@@ -16,3 +16,12 @@
         <a href="../PersonalMantenimiento/TReportarFallo.jsp">Reportar Fallo</a>
     </nav>
 </div>
+<script>
+    let nombreusuario=document.getElementById("NombreUsuario");
+    let user=JSON.parse(sessionStorage.getItem('usuario'));
+    nombreusuario.innerText=user.nombre.split(" ")[0] +"\t"+user.apellido.split(" ")[0];
+    nombreusuario.style.width="180px";
+    nombreusuario.style.textAlign="center";
+    nombreusuario.style.position="relative";
+    nombreusuario.style.left="-40px";
+</script>
