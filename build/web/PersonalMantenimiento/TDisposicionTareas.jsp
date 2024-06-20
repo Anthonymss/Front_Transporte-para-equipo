@@ -36,13 +36,14 @@
                     <tbody id="tareas-tbody">
                     </tbody>
                     <script>
-                           document.addEventListener('DOMContentLoaded', () => {
+                        
+                           
                                const urlBase = "http://localhost:9090/api/v1";
                                let usuario = JSON.parse(sessionStorage.getItem('usuario'));
                                const tokenn = usuario ? usuario.token : null;
                                let tecnicoId = usuario ? usuario.id : null;
                                let idOrden = null;
-
+                            document.addEventListener('DOMContentLoaded', () => {
                                if (!usuario || !tokenn) {
                                    console.error('Usuario no autenticado');
                                    alert('Usuario no autenticado. Por favor, inicie sesión nuevamente.');
@@ -109,7 +110,7 @@
                                            const tr = document.createElement('tr');
                                            const tecnicoInfo = tarea.tecnico ? tarea.tecnico.nombre + ' ' + tarea.tecnico.apellido : 'No asignado';
                                            const asignarBoton = tarea.tecnico ? 
-                                               '<button class="btn btn-primary" disabled>Asignado</button>' : 
+                                               '<p style="color: red">Asignado</p>' : 
                                                '<button class="btn btn-primary" onclick="asignarTecnico(' + tarea.id + ')">Elegir</button>';
 
                                            tr.innerHTML = `
@@ -129,8 +130,8 @@
                                        alert('Error al cargar las tareas: ' + error.message);
                                    });
                                }
-
-                               function asignarTecnico(tareaId) {
+                           });
+                           function asignarTecnico(tareaId) {
                                    if (tecnicoId) {
                                        fetch(urlBase + "/mantenimiento/" + tareaId + "/asignar", {
                                            method: 'PUT',
@@ -158,7 +159,6 @@
                                        console.error('ID no válido');
                                    }
                                }
-                           });
                        </script>
                 </table>
                 
