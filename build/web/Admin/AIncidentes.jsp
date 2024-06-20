@@ -85,6 +85,47 @@
             </div>
         </div>
         
-        
+         <script>
+        const urlBase = "http://localhost:9090/api/v1"; 
+        let usuario = JSON.parse(sessionStorage.getItem('usuario'));
+        let token = usuario ? usuario.token : null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const formularioIncidente = document.getElementById('incidente-form');
+            formularioIncidente.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const idTecnico = document.getElementById('idTecnico').value;
+                const idCliente = document.getElementById('idCliente').value;
+                const descripcion = document.getElementById('descripcion').value;
+
+                const nuevoIncidente = {
+                    idTecnico: idTecnico,
+                    idCliente: idCliente,
+                    descripcion: descripcion
+                };
+
+                fetch(urlBase + "/incidentes", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(nuevoIncidente)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la solicitud: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Incidente registrado exitosamente.');
+                    
+                })
+                .catch(error => console.error('Error al registrar incidente:', error));
+            });
+        });
+    </script>
     </body>
 </html>

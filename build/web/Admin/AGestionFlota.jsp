@@ -80,6 +80,59 @@
                 
             </div>      
         </div>
-        
+        <script>
+    const urlBase = "http://localhost:9090/api/v1"; 
+    let usuario = JSON.parse(sessionStorage.getItem('usuario')); 
+    let token = usuario ? usuario.token : null; 
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!usuario || !token) {
+            console.error('Usuario no autenticado');
+            alert('Usuario no autenticado. Por favor, inicie sesión nuevamente.');
+            window.location.href = '/login'; 
+            return;
+        }
+      
+        const formularioGestion = document.getElementById('formularioGestion');
+        formularioGestion.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            
+            const vehiculo = document.getElementById('vehiculo').value;
+            const mantenimiento = document.getElementById('mantenimiento').value;
+            const estado = document.getElementById('estado').value;
+            const fechaVencimiento = document.getElementById('fechaVencimiento').value;
+
+            
+            const datosMantenimiento = {
+                vehiculo: vehiculo,
+                mantenimiento: mantenimiento,
+                estado: estado,
+                fechaVencimiento: fechaVencimiento
+            };
+
+           
+            fetch(urlBase + "/gestionflota", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify(datosMantenimiento)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la solicitud: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Datos de mantenimiento guardados exitosamente.');
+                
+            })
+            .catch(error => console.error('Error al guardar los datos de mantenimiento:', error));
+        });
+    });
+</script>
     </body>
 </html>

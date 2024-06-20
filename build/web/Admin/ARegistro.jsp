@@ -49,7 +49,54 @@
                 </div>
             </div>
 
+    <script>
+        const urlBase = "http://localhost:9090/api/v1";
+        let usuario = JSON.parse(sessionStorage.getItem('usuario'));
+        let token = usuario ? usuario.token : null;
 
+        document.addEventListener('DOMContentLoaded', () => {
+            const formularioUsuario = document.getElementById('usuario-form');
+            formularioUsuario.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const codigo = document.getElementById('codigo').value;
+                const nombres = document.getElementById('nombres').value;
+                const apellidos = document.getElementById('apellidos').value;
+                const correo = document.getElementById('correo').value;
+                const direccion = document.getElementById('direccion').value;
+                const telefono = document.getElementById('telefono').value;
+
+                const nuevoUsuario = {
+                    codigo: codigo,
+                    nombres: nombres,
+                    apellidos: apellidos,
+                    correo: correo,
+                    direccion: direccion,
+                    telefono: telefono
+                };
+
+                fetch(urlBase + "/usuarios", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(nuevoUsuario)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la solicitud: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Usuario registrado exitosamente.');
+                  
+                })
+                .catch(error => console.error('Error al registrar usuario:', error));
+            });
+        });
+    </script>
 
 
 

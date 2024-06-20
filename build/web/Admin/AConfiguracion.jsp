@@ -68,5 +68,53 @@
 </table>
  </div>
 </div>
+ <script>
+    const urlBase = "http://localhost:9090/api/v1";
+    let usuario = JSON.parse(sessionStorage.getItem('usuario'));
+    let token = usuario ? usuario.token : null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!usuario || !token) {
+            console.error('Usuario no autenticado');
+            alert('Usuario no autenticado. Por favor, inicie sesión nuevamente.');
+            window.location.href = '/login';
+            return;
+        }
+
+        const formularioConfiguracion = document.getElementById('configuracionForm');
+        formularioConfiguracion.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const zonaHoraria = document.getElementById('zonaHoraria').value;
+            const idioma = document.getElementById('idioma').value;
+            const usuarioCorreo = document.getElementById('usuarioCorreo').value;
+            const contrasenaCorreo = document.getElementById('contrasenaCorreo').value;
+            const configuracion = {
+                zonaHoraria: zonaHoraria,
+                idioma: idioma,
+                usuarioCorreo: usuarioCorreo,
+                contrasenaCorreo: contrasenaCorreo
+            };
+
+            fetch(urlBase + "/configuracion", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify(configuracion)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la solicitud: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Configuración guardada exitosamente.');
+            })
+            .catch(error => console.error('Error al guardar la configuración:', error));
+        });
+    });
+</script>                           
 </body>
 </html>
