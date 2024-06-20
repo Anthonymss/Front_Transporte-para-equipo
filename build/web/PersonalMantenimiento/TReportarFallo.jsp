@@ -23,17 +23,13 @@
                     <form >
                         <div>
                             <label >ID del Vehiculo</label>
-                            <input type="number" class="form-control" required>
-                        </div>
-                        <div>
-                            <label >Nombre</label>
-                            <input type="text" class="form-control" required>
+                            <input id="idvehiculo" type="number" class="form-control" required>
                         </div>
                         <div >
                             <label for="descripcion">descripcion</label>
-                            <textarea class="form-control"></textarea>
+                            <textarea id="descripcion" class="form-control"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Solicitar</button>
+                        <button class="btn btn-primary" onclick="enviar()">Solicitar</button>
                     </form>
                 </div>
             </div>
@@ -42,66 +38,75 @@
                     <table class="table table-striped table-dark">
                         <thead>
                             <tr>
-                                <th>ID  Vehiculo</th>
-                                <th>Nombre</th>
+                                <th>id</th>
                                 <th>Descripción</th>
                                 <th>Fecha</th>
+                                <th>Vehiculo</th>                                
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Fallo en frenos</td>
-                                <td>Los frenos hacen un ruido extraño al frenar</td>
-                                <td>2024-05-20</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Luces no funcionan</td>
-                                <td>Las luces delanteras no encienden al activarlas</td>
-                                <td>2024-05-21</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Fallo en frenos</td>
-                                <td>Los frenos hacen un ruido extraño al frenar</td>
-                                <td>2024-05-20</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Luces no funcionan</td>
-                                <td>Las luces delanteras no encienden al activarlas</td>
-                                <td>2024-05-21</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Fallo en frenos</td>
-                                <td>Los frenos hacen un ruido extraño al frenar</td>
-                                <td>2024-05-20</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Luces no funcionan</td>
-                                <td>Las luces delanteras no encienden al activarlas</td>
-                                <td>2024-05-21</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Fallo en frenos</td>
-                                <td>Los frenos hacen un ruido extraño al frenar</td>
-                                <td>2024-05-20</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Luces no funcionan</td>
-                                <td>Las luces delanteras no encienden al activarlas</td>
-                                <td>2024-05-21</td>
-                            </tr>
+                        <tbody id="tablaid">
+
                         </tbody>
                 
             </div>
         </div>
-        
+        <script>
+            const urlBase = "http://localhost:9090/api/v1";
+            let usuario = JSON.parse(sessionStorage.getItem('usuario'));
+            let id = usuario.id;
+            let token = usuario.token;
+
+            function enviar() {
+                const descripcion = document.getElementById('descripcion').value;
+                const idvehiculo = document.getElementById("idvehiculo").value;
+                const Fallo = {
+                    descripcion: descripcion,
+                    vehiculo: { id: idvehiculo },
+                    tecnico: { id: id }
+                };
+
+                fetch(urlBase + "/mantenimiento/reportes-fallos", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(Fallo)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Fallo registrado con ID: ' + data.id);
+                    cargartabla();
+                })
+                .catch(error => console.error('Error al registrar el fallo:', error));
+            }
+
+            function cargartabla() {
+                fetch(urlBase + "/mantenimiento/listarReportes/" + id, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const tablaBody = document.getElementById('tablaid');
+                    tablaBody.innerHTML = ''; 
+
+                    data.forEach(report => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = '<td>' + report.id + '</td>' +
+                                       '<td>' + report.descripcion + '</td>' +
+                                       '<td>' + report.fecha_reporte + '</td>' +
+                                       '<td>' + report.vehiculo.marca + ' - ' + report.vehiculo.placa + '</td>';
+                        tablaBody.appendChild(tr);
+                    });
+                })
+                .catch(error => console.error('Error al cargar los reportes:', error));
+            }
+
+            cargartabla();
+        </script>
         
     </body>
 </html>

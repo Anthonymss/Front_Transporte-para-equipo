@@ -143,56 +143,56 @@
 </body>
 </html>
 <style>
-    .contenedor {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-}
+        .contenedor {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
 
-.contenedor .titulo {
-    font-size: 36px;
-    text-align: center;
-    margin-bottom: 20px;
-}
+    .contenedor .titulo {
+        font-size: 36px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
-.contenedor .tablaDisposicion {
-    width: 100%;
-    margin-bottom: 40px;
-}
+    .contenedor .tablaDisposicion {
+        width: 100%;
+        margin-bottom: 40px;
+    }
 
-.contenedor .tablaDisposicion table {
-    width: 100%;
-    border-collapse: collapse;
-}
+    .contenedor .tablaDisposicion table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-.contenedor .tablaDisposicion th,
-.contenedor .tablaDisposicion td {
-    padding: 12px;
-    text-align: left;
-}
+    .contenedor .tablaDisposicion th,
+    .contenedor .tablaDisposicion td {
+        padding: 12px;
+        text-align: left;
+    }
 
-.contenedor .tablaDisposicion thead {
-    background-color: #343a40;
-    color: white;
-}
+    .contenedor .tablaDisposicion thead {
+        background-color: #343a40;
+        color: white;
+    }
 
-.contenedor .tablaDisposicion tbody tr:nth-child(even) {
-    background-color: #495057;
-}
+    .contenedor .tablaDisposicion tbody tr:nth-child(even) {
+        background-color: #495057;
+    }
 
-.contenedor .tablaDisposicion tbody tr:hover {
-    background-color: #6c757d;
-}
+    .contenedor .tablaDisposicion tbody tr:hover {
+        background-color: #6c757d;
+    }
 
-.contenedor .tablaDisposicion .titulo {
-    font-size: 24px;
-    text-align: center;
-    margin-bottom: 10px;
-}
+    .contenedor .tablaDisposicion .titulo {
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
 
-.contenedor .tablaDisposicion .table {
-    margin-bottom: 0;
-}
+    .contenedor .tablaDisposicion .table {
+        margin-bottom: 0;
+    }
 
 </style>
